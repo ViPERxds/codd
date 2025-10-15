@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Импорт данных - ЦОДД Смоленской области</title>
+    <link rel="stylesheet" href="src/admin-dashboard.css">
+    <style>
+        .import-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .import-section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .file-upload {
+            border: 2px dashed #62a744;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .file-upload:hover {
+            background-color: #f8f9fa;
+            border-color: #4a7c59;
+        }
+        
+        .file-upload.dragover {
+            background-color: #e8f5e8;
+            border-color: #4a7c59;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            color: #62a744;
+            margin-bottom: 10px;
+        }
+        
+        .sheet-mapping {
+            margin-top: 20px;
+        }
+        
+        .sheet-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        
+        .sheet-name {
+            flex: 1;
+            font-weight: bold;
+        }
+        
+        .sheet-status {
+            margin-left: 10px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-mapped {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #62a744;
+            transition: width 0.3s ease;
+        }
+        
+        .import-log {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        
+        .log-entry {
+            margin-bottom: 5px;
+        }
+        
+        .log-success {
+            color: #155724;
+        }
+        
+        .log-error {
+            color: #721c24;
+        }
+        
+        .log-warning {
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <header class="admin-header">
+            <div class="header-content">
+                <h1>Импорт данных</h1>
+                <div class="header-actions">
+                    <a href="admin-dashboard.html" class="btn btn-secondary">← Назад к панели</a>
+                </div>
+            </div>
+        </header>
+
+        <div class="admin-content">
+            <div class="import-container">
+                <!-- Загрузка файла -->
+                <div class="import-section">
+                    <h2>1. Загрузка Excel файла</h2>
+                    <div class="file-upload" id="fileUpload">
+                        <div class="upload-icon">📁</div>
+                        <h3>Перетащите Excel файл сюда или нажмите для выбора</h3>
+                        <p>Поддерживаются форматы: .xlsx, .xls</p>
+                        <input type="file" id="fileInput" class="file-input" accept=".xlsx,.xls">
+                    </div>
+                    <div id="fileInfo" style="display: none;">
+                        <p><strong>Файл:</strong> <span id="fileName"></span></p>
+                        <p><strong>Размер:</strong> <span id="fileSize"></span></p>
+                    </div>
+                </div>
+
+                <!-- Маппинг листов -->
+                <div class="import-section" id="mappingSection" style="display: none;">
+                    <h2>2. Настройка импорта</h2>
+                    <div class="sheet-mapping" id="sheetMapping">
+                        <!-- Здесь будут отображаться листы -->
+                    </div>
+                    <button class="btn btn-primary" id="startImport" disabled>Начать импорт</button>
+                </div>
+
+                <!-- Прогресс импорта -->
+                <div class="import-section" id="progressSection" style="display: none;">
+                    <h2>3. Импорт данных</h2>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                    </div>
+                    <p id="progressText">Подготовка к импорту...</p>
+                    
+                    <div class="import-log" id="importLog">
+                        <!-- Лог импорта -->
+                    </div>
+                </div>
+
+                <!-- Результаты -->
+                <div class="import-section" id="resultsSection" style="display: none;">
+                    <h2>4. Результаты импорта</h2>
+                    <div id="importResults">
+                        <!-- Результаты импорта -->
+                    </div>
+                    <button class="btn btn-primary" id="viewData">Просмотреть данные</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Подключаем библиотеку для работы с Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="src/import-data.js"></script>
+</body>
+</html>

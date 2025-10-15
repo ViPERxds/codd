@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>О ЦОДД — ЦОДД Смоленской области</title>
+    <meta name="description" content="Центр организации дорожного движения Смоленской области.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="src/styles.css">
+    <link rel="stylesheet" href="src/smart-search.css">
+    <link rel="stylesheet" href="src/mobile.css">
+    <link rel="stylesheet" href="src/about.css">
+</head>
+<body>
+    <a class="skip-link" href="#main">Перейти к содержимому</a>
+
+    <header class="site-header" data-header>
+        <div class="container header-inner">
+            <a href="index.html" class="logo" aria-label="ЦОДД Смоленской области">
+                <img src="assets/images/logo.webp" alt="ЦОДД Смоленской области" class="logo-img">
+                <span class="logo-text">ЦОДД Смоленской области</span>
+            </a>
+
+            <nav class="nav" aria-label="Основная навигация">
+                <ul class="nav-list" data-desktop-nav>
+                    <li><a href="index.html#home">Главное</a></li>
+                    <li><a href="index.html#analytics">Мониторинг</a></li>
+                    <li><a href="index.html#analytics">Аналитика</a></li>
+                    <li><a href="index.html#projects">Проекты</a></li>
+                    <li><a href="index.html#services">Услуги</a></li>
+                </ul>
+
+                <div class="search" role="search">
+                    <label class="sr-only" for="site-search">Поиск по сайту</label>
+                    <input id="site-search" class="search-input" type="search" placeholder="Поиск по сайту" autocomplete="off" data-search-input>
+                    <div class="search-suggestions" hidden data-suggestions></div>
+                </div>
+
+                <button class="burger" aria-expanded="false" aria-controls="mobile-menu" data-burger>
+                    <span class="burger-line"></span>
+                    <span class="burger-line"></span>
+                    <span class="burger-line"></span>
+                    <span class="sr-only">Меню</span>
+                </button>
+            </nav>
+        </div>
+        <div class="menu-backdrop" hidden data-menu-backdrop></div>
+        <div id="mobile-menu" class="mobile-menu" hidden data-mobile-menu>
+            <div class="mobile-menu-header">
+                <span>Меню</span>
+                <button class="close" aria-label="Закрыть меню" data-close-menu>✕</button>
+            </div>
+            <ul class="mobile-nav-list">
+                <li><a href="#home" data-mobile-link data-scroll-to="#home">Главная</a></li>
+                <li><a href="about.html" data-mobile-link>О ЦОДД</a></li>
+                <li><a href="team.html" data-mobile-link>Команда</a></li>
+                <li><a href="projects.html" data-mobile-link>Проекты</a></li>
+                <li><a href="news.html" data-mobile-link>Новости</a></li>
+                <li><a href="documents.html" data-mobile-link>Документы</a></li>
+                <li><a href="contacts.html" data-mobile-link>Контакты</a></li>
+            </ul>
+            <div class="mobile-search">
+                <label class="sr-only" for="mobile-search">Поиск</label>
+                <input id="mobile-search" class="search-input" type="search" placeholder="Поиск по сайту" autocomplete="off" data-mobile-search>
+            </div>
+        </div>
+    </header>
+
+    <main id="main" class="main">
+        <section class="hero" aria-label="О ЦОДД" style="background-image: url('assets/images/about/about-1.webp')">
+            <div class="hero-overlay"></div>
+            <div class="container hero-inner">
+                <div class="hero-content">
+                    <h1 class="hero-title">Центр организации дорожного движения</h1>
+                </div>
+            </div>
+        </section>
+
+
+        <div class="ribbon ribbon--flat">
+            <span>мы знаем безопасный путь</span>
+        </div>
+    </main>
+    
+    <section class="about-dark">
+        <div class="container">
+            <div class="hover-cards">
+                <article class="hover-card" tabindex="0">
+                    <div class="front">
+                        <div class="icon">🗺️</div>
+                        <h3>Наша миссия</h3>
+                    </div>
+                    <div class="back">
+                        <p>Мы создаем и поддерживаем условия для комфортного, безопасного и быстрого передвижения жителей Смоленска и области.</p>
+                    </div>
+                </article>
+                <article class="hover-card" tabindex="0">
+                    <div class="front">
+                        <div class="icon">🤝</div>
+                        <h3>Наши ценности</h3>
+                    </div>
+                    <div class="back">
+                        <ul>
+                            <li>Профессионализм</li>
+                            <li>Инициативность</li>
+                            <li>Инновационность</li>
+                            <li>Любовь к городу</li>
+                            <li>Всё для людей</li>
+                        </ul>
+                    </div>
+                </article>
+                <article class="hover-card" tabindex="0">
+                    <div class="front">
+                        <div class="icon">🔗</div>
+                        <h3>Наше видение</h3>
+                    </div>
+                    <div class="back">
+                        <p>Единая интеллектуальная транспортная система региона: светофоры, мониторинг, общественный транспорт, парковки и безопасность работают согласованно.</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <div class="ribbon ribbon--flat"><span>делаем передвижение удобным</span></div>
+
+    <section class="section">
+        <div class="container big-text">
+            <div class="point">
+                <div class="num">1</div>
+                <p>Чтобы сделать Смоленск безопасным и удобным, <strong>мы используем новые технологии и ищем нестандартные решения</strong>. Камеры и датчики помогают быстрее выявлять инциденты и реагировать на них.</p>
+            </div>
+            <div class="point">
+                <div class="num">2</div>
+                <p>Ситуационный центр анализирует данные и <strong>управляет потоками</strong>: настраиваем светофоры, даём приоритет общественному транспорту, снижаем задержки и пробки.</p>
+            </div>
+            <div class="point">
+                <div class="num">3</div>
+                <p>Мы <strong>постоянно анализируем дорожное движение</strong> и предотвращаем ДТП: размещаем камеры в аварийных точках, улучшаем разметку и инфраструктуру.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="ribbon ribbon--flat"><span>ДЕЛАЕМ ПЕРЕДВИЖЕНИЕ УДОБНЫМ</span></div>
+
+    <section class="section">
+        <div class="container big-text big-text-xl">
+            <div class="point">
+                <div class="num">4</div>
+                <p><strong>Организуем движение так, чтобы было комфортнее и безопаснее передвигаться по городу.</strong> Отслеживаем трафик и при авариях оперативно направляем дорожный патруль.</p>
+            </div>
+            <div class="point">
+                <div class="num">5</div>
+                <p><strong>Автобусы ходят по выделенным полосам и не опаздывают,</strong> умные светофоры дают приоритет, а пересадки между видами транспорта удобные и быстрые.</p>
+            </div>
+            <div class="point">
+                <div class="num">6</div>
+                <p><strong>Пешеходам не нужно делать крюк:</strong> организуем диагональные переходы и настраиваем фазы так, чтобы переходить было быстрее и безопаснее.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="ribbon ribbon--flat"><span>ЗАБОТИМСЯ О ДОРОЖНОЙ БЕЗОПАСНОСТИ</span></div>
+
+    <section class="section">
+        <div class="container big-text big-text-xl">
+            <div class="point">
+                <div class="num">7</div>
+                <p><strong>Шумовые полосы предупреждают водителей о необходимости снизить скорость,</strong> а островки безопасности дают пешеходам место для ожидания, если не успели перейти дорогу за один раз.</p>
+            </div>
+            <div class="point">
+                <div class="num">8</div>
+                <p><strong>В аварийных местах устанавливаем камеры:</strong> это приводит к снижению нарушений ПДД и количества ДТП. Штрафы выписывает ГИБДД, а мы анализируем данные для улучшения инфраструктуры.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="slider">
+                <div class="slider-nav">
+                    <button class="slider-btn slider-btn--prev" aria-label="Предыдущий слайд">‹</button>
+                    <button class="slider-btn slider-btn--next" aria-label="Следующий слайд">›</button>
+                </div>
+                <div class="slider-track">
+                    <div class="slider-slide active">
+                        <div class="slide-icon">📹</div>
+                        <h3>Дорожные камеры</h3>
+                        <p>Камеры и нейросети определяют и обрабатывают нарушения ПДД. Со сложными случаями компьютеру помогает человек.</p>
+                    </div>
+                    <div class="slider-slide">
+                        <div class="slide-icon">🚦</div>
+                        <h3>Умные светофоры</h3>
+                        <p>Светофоры в Смоленске адаптируются к потоку транспорта, дают приоритет общественному транспорту и снижают задержки на перекрёстках.</p>
+                    </div>
+                    <div class="slider-slide">
+                        <div class="slide-icon">🚌</div>
+                        <h3>Приоритет ОТ</h3>
+                        <p>Автобусы и троллейбусы получают зелёный сигнал раньше, что делает общественный транспорт быстрее и привлекательнее для жителей.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="ribbon ribbon--flat">
+        <span>рассказываем о транспорте</span>
+    </div>
+
+    <section class="section">
+        <div class="container big-text big-text-xl">
+            <div class="point">
+                <div class="num">9</div>
+                <p><strong>Специальные уроки в школах учат детей безопасности на дорогах.</strong> В следующий раз родителям не придётся объяснять, почему опасно переходить на красный — мы это сделаем за вас.</p>
+            </div>
+            <div class="point">
+                <div class="num">10</div>
+                <p><strong>Не забываем и про взрослых:</strong> например, советуем, как начать ездить на велосипеде по городу, помогаем изучить дорожные знаки и выбрать экипировку. Попробуете — обязательно полюбите велопрогулки.</p>
+            </div>
+            <div class="point">
+                <div class="num">11</div>
+                <p><strong>Переход на велосипед делает город лучше — и дело не только в экологии.</strong> Данные о поездках на велосипедах, самокатах и каршеринге изучаем, чтобы понять потребности жителей и найти проблемы. Вся информация анонимна и защищена.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="ribbon ribbon--flat"></div>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div class="footer-brand">
+                <a href="index.html#home" class="logo" aria-label="ЦОДД Смоленской области">
+                    <img src="assets/images/logo.webp" alt="ЦОДД Смоленской области" class="logo-img">
+                    <span class="logo-text">ЦОДД Смоленской области</span>
+                </a>
+                <p class="muted">Безопасность и комфорт на дорогах региона.</p>
+            </div>
+            <nav class="footer-nav">
+                <div class="col">
+                    <h4>Разделы</h4>
+                    <ul>
+                        <li><a href="about.html">О ЦОДД</a></li>
+                        <li><a href="team.html">Команда</a></li>
+                        <li><a href="projects.html">Проекты</a></li>
+                        <li><a href="news.html">Новости</a></li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <h4>Сервисы</h4>
+                    <ul>
+                        <li><a href="index.html#services">Услуги</a></li>
+                        <li><a href="#">Контакты</a></li>
+                        <li><a href="#">Документы</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <div class="container footer-bottom">
+            <span>© <span id="y"></span> ЦОДД Смоленской области</span>
+            <a class="muted" href="#" aria-label="Политика конфиденциальности">Политика конфиденциальности</a>
+        </div>
+    </footer>
+
+    <script src="src/main.js" defer></script>
+    <script src="src/smart-search.js" defer></script>
+</body>
+<noscript>Для корректной работы сайта включите JavaScript.</noscript>
+</html>
+
+

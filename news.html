@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новости - ЦОДД Смоленской области</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="src/styles.css">
+    <link rel="stylesheet" href="src/smart-search.css">
+    <link rel="stylesheet" href="src/mobile.css">
+    <link rel="stylesheet" href="src/news.css">
+</head>
+<body>
+    <a class="skip-link" href="#main">Перейти к содержимому</a>
+    
+    <header class="site-header" data-header>
+        <div class="container header-inner">
+            <a href="index.html" class="logo" aria-label="ЦОДД Смоленской области">
+                <img src="assets/images/logo.webp" alt="ЦОДД Смоленской области" class="logo-img">
+                <span class="logo-text">ЦОДД Смоленской области</span>
+            </a>
+
+            <nav class="nav" aria-label="Основная навигация">
+                <ul class="nav-list" data-desktop-nav>
+                    <li><a href="index.html#home">Главное</a></li>
+                    <li><a href="index.html#analytics">Мониторинг</a></li>
+                    <li><a href="index.html#analytics">Аналитика</a></li>
+                    <li><a href="index.html#projects">Проекты</a></li>
+                    <li><a href="index.html#services">Услуги</a></li>
+                </ul>
+
+                <div class="search" role="search">
+                    <label class="sr-only" for="site-search">Поиск по сайту</label>
+                    <input id="site-search" class="search-input" type="search" placeholder="Поиск по сайту" autocomplete="off" data-search-input>
+                    <div class="search-suggestions" hidden data-suggestions></div>
+                </div>
+
+                <button class="burger" aria-expanded="false" aria-controls="mobile-menu" data-burger>
+                    <span class="burger-line"></span>
+                    <span class="burger-line"></span>
+                    <span class="burger-line"></span>
+                    <span class="sr-only">Меню</span>
+                </button>
+            </nav>
+        </div>
+        <div class="menu-backdrop" hidden data-menu-backdrop></div>
+        <div id="mobile-menu" class="mobile-menu" hidden data-mobile-menu>
+            <div class="mobile-menu-header">
+                <span>Меню</span>
+                <button class="close" aria-label="Закрыть меню" data-close-menu>✕</button>
+            </div>
+            <ul class="mobile-nav-list">
+                <li><a href="#home" data-mobile-link data-scroll-to="#home">Главная</a></li>
+                <li><a href="about.html" data-mobile-link>О ЦОДД</a></li>
+                <li><a href="team.html" data-mobile-link>Команда</a></li>
+                <li><a href="projects.html" data-mobile-link>Проекты</a></li>
+                <li><a href="news.html" data-mobile-link>Новости</a></li>
+                <li><a href="documents.html" data-mobile-link>Документы</a></li>
+                <li><a href="contacts.html" data-mobile-link>Контакты</a></li>
+            </ul>
+            <div class="mobile-search">
+                <label class="sr-only" for="mobile-search">Поиск</label>
+                <input id="mobile-search" class="search-input" type="search" placeholder="Поиск по сайту" autocomplete="off" data-mobile-search>
+            </div>
+        </div>
+    </header>
+
+    <main id="main">
+        <section class="news-section">
+            <div class="container">
+                <h1 class="section-title">Новости</h1>
+                <p class="section-subtitle">Актуальные события в сфере дорожного движения Смоленской области</p>
+                <div class="news-grid">
+                    <!-- Новости загружаются динамически через JavaScript -->
+                </div>
+
+                <div class="news-pagination">
+                    <button class="pagination-btn" disabled>Назад</button>
+                    <span class="pagination-info">Страница 1 из 2</span>
+                    <button class="pagination-btn">Вперед</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div class="footer-brand">
+                <a href="index.html#home" class="logo" aria-label="ЦОДД Смоленской области">
+                    <img src="assets/images/logo.webp" alt="ЦОДД Смоленской области" class="logo-img">
+                    <span class="logo-text">ЦОДД Смоленской области</span>
+                </a>
+                <p class="muted">Безопасность и комфорт на дорогах региона.</p>
+            </div>
+            <nav class="footer-nav">
+                <div class="col">
+                    <h4>Разделы</h4>
+                    <ul>
+                        <li><a href="about.html">О ЦОДД</a></li>
+                        <li><a href="team.html">Команда</a></li>
+                        <li><a href="projects.html">Проекты</a></li>
+                        <li><a href="news.html">Новости</a></li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <h4>Сервисы</h4>
+                    <ul>
+                        <li><a href="index.html#services">Услуги</a></li>
+                        <li><a href="index.html#docs">Документы</a></li>
+                        <li><a href="index.html#contacts">Контакты</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <div class="container footer-bottom">
+            <span>© <span id="y"></span> ЦОДД Смоленской области</span>
+            <a class="muted" href="#" aria-label="Политика конфиденциальности">Политика конфиденциальности</a>
+        </div>
+    </footer>
+
+    <script src="src/main.js" defer></script>
+    <script src="src/smart-search.js" defer></script>
+    <script src="src/news.js" defer></script>
+</body>
+</html>

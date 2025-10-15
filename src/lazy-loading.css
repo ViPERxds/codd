@@ -1,0 +1,550 @@
+/* Lazy Loading Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
+}
+
+/* Loading States */
+.loading {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+
+.loaded {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Skeleton Loading */
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200px 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px;
+}
+
+.skeleton-text {
+    height: 1em;
+    margin: 0.5em 0;
+}
+
+.skeleton-title {
+    height: 2em;
+    width: 70%;
+    margin-bottom: 1em;
+}
+
+.skeleton-card {
+    height: 200px;
+    border-radius: 8px;
+    margin-bottom: 1em;
+}
+
+/* Hero Loading Animation */
+.hero-loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-loading::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    animation: shimmer 2s infinite;
+    z-index: 2;
+}
+
+.hero-content.loading {
+    opacity: 0;
+    transform: translateY(50px);
+}
+
+.hero-content.loaded {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 1s ease 0.3s;
+}
+
+.hero-title.loading {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.hero-title.loaded {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.8s ease 0.5s;
+}
+
+.hero-subtitle.loading {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.hero-subtitle.loaded {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.8s ease 0.7s;
+}
+
+.hero-cta.loading {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.hero-cta.loaded {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.8s ease 0.9s;
+}
+
+.hero-stats.loading {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.hero-stats.loaded {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.8s ease 1.1s;
+}
+
+/* Section Loading Animations */
+.section-loading {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s ease;
+}
+
+.section-loaded {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Card Loading Animations */
+.card-loading {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    transition: all 0.6s ease;
+}
+
+.card-loaded {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Staggered Animation for Multiple Elements */
+.stagger-1 { transition-delay: 0.1s; }
+.stagger-2 { transition-delay: 0.2s; }
+.stagger-3 { transition-delay: 0.3s; }
+.stagger-4 { transition-delay: 0.4s; }
+.stagger-5 { transition-delay: 0.5s; }
+.stagger-6 { transition-delay: 0.6s; }
+
+/* Loading Spinner */
+.loading-spinner {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #62a744;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Progress Bar */
+.loading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(90deg, #62a744, #4a8a35);
+    z-index: 10000;
+    transition: width 0.3s ease;
+}
+
+/* Page Loader */
+.page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #f8fffe 0%, #e8f5e8 50%, #f0f8f0 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+    overflow: hidden;
+}
+
+.page-loader::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(98, 167, 68, 0.1) 0%, transparent 70%);
+    animation: rotate 20s linear infinite;
+}
+
+.page-loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.page-loader .logo {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 2;
+    animation: logoFloat 3s ease-in-out infinite;
+}
+
+.page-loader .logo::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    background: linear-gradient(45deg, #62a744, #4a8a35, #62a744);
+    border-radius: 50%;
+    opacity: 0.2;
+    animation: logoGlow 2s ease-in-out infinite alternate;
+}
+
+.page-loader .logo .logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 50%;
+    box-shadow: 0 10px 30px rgba(98, 167, 68, 0.3);
+    position: relative;
+    z-index: 1;
+}
+
+.page-loader .spinner-container {
+    position: relative;
+    margin-bottom: 30px;
+    z-index: 2;
+}
+
+.page-loader .spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(98, 167, 68, 0.2);
+    border-top: 4px solid #62a744;
+    border-right: 4px solid #4a8a35;
+    border-radius: 50%;
+    animation: spin 1.2s linear infinite;
+    position: relative;
+}
+
+.page-loader .spinner::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
+    border: 2px solid rgba(98, 167, 68, 0.1);
+    border-radius: 50%;
+    animation: spin 2s linear infinite reverse;
+}
+
+.page-loader .spinner::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    background: #62a744;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.page-loader .text {
+    margin-top: 20px;
+    color: #2d5016;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    animation: textFade 2s ease-in-out infinite;
+}
+
+.page-loader .progress-dots {
+    display: flex;
+    gap: 8px;
+    margin-top: 20px;
+    z-index: 2;
+    position: relative;
+}
+
+.page-loader .progress-dots .dot {
+    width: 8px;
+    height: 8px;
+    background: #62a744;
+    border-radius: 50%;
+    animation: dotPulse 1.5s ease-in-out infinite;
+}
+
+.page-loader .progress-dots .dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.page-loader .progress-dots .dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+/* Animations */
+@keyframes logoFloat {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+@keyframes logoGlow {
+    0% { opacity: 0.2; transform: scale(1); }
+    100% { opacity: 0.4; transform: scale(1.1); }
+}
+
+@keyframes textFade {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+@keyframes dotPulse {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Intersection Observer Classes */
+.observe-me {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
+}
+
+.observe-me.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+    .hero-content.loading {
+        transform: translateY(20px);
+    }
+    
+    .section-loading {
+        transform: translateY(30px);
+    }
+    
+    .card-loading {
+        transform: translateY(20px) scale(0.98);
+    }
+    
+    .page-loader .logo {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 25px;
+    }
+    
+    .page-loader .logo .logo-img {
+        width: 100%;
+        height: 100%;
+    }
+    
+    .page-loader .spinner {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .page-loader .text {
+        font-size: 16px;
+    }
+    
+    .page-loader .progress-dots .dot {
+        width: 6px;
+        height: 6px;
+    }
+}
+
+/* News Loading Styles */
+.news-item {
+    transition: all 0.6s ease;
+}
+
+.news-item.card-loading {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+}
+
+.news-item.card-loaded {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.news-error {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+/* Statistics Loading */
+.stat-card {
+    transition: all 0.6s ease;
+}
+
+.stat-card.card-loading {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+}
+
+.stat-card.card-loaded {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Chart Loading */
+.chart-container {
+    position: relative;
+    min-height: 300px;
+}
+
+.chart-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #666;
+}
+
+.chart-loading .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #62a744;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 10px;
+}
+
+/* Image Loading */
+.lazy-image {
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+.lazy-image.loaded {
+    opacity: 1;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    .loading,
+    .loaded,
+    .section-loading,
+    .section-loaded,
+    .card-loading,
+    .card-loaded,
+    .observe-me,
+    .observe-me.visible {
+        transition: none;
+        animation: none;
+    }
+    
+    .hero-loading::before {
+        animation: none;
+    }
+    
+    .skeleton {
+        animation: none;
+    }
+}
