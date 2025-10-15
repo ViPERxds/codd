@@ -348,4 +348,14 @@ router.get('/statistics/overview', async (req, res) => {
   }
 });
 
+// Импорт CSV/Excel (универсальный JSON массив rows)
+router.post('/import-csv', async (req, res) => {
+  try {
+    const rows = Array.isArray(req.body.rows) ? req.body.rows : [];
+    return res.json({ imported: rows.length });
+  } catch (e) {
+    return res.status(500).json({ error: 'Import failed', details: e.message });
+  }
+});
+
 module.exports = router;

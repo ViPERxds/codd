@@ -148,12 +148,12 @@
             <div class="import-container">
                 <!-- Загрузка файла -->
                 <div class="import-section">
-                    <h2>1. Загрузка Excel файла</h2>
+                    <h2>1. Загрузка файла данных</h2>
                     <div class="file-upload" id="fileUpload">
                         <div class="upload-icon">📁</div>
-                        <h3>Перетащите Excel файл сюда или нажмите для выбора</h3>
-                        <p>Поддерживаются форматы: .xlsx, .xls</p>
-                        <input type="file" id="fileInput" class="file-input" accept=".xlsx,.xls">
+                        <h3>Перетащите файл сюда или нажмите для выбора</h3>
+                        <p>Поддерживаются форматы: .csv, .xlsx, .xls</p>
+                        <input type="file" id="fileInput" class="file-input" accept=".csv,.xlsx,.xls">
                     </div>
                     <div id="fileInfo" style="display: none;">
                         <p><strong>Файл:</strong> <span id="fileName"></span></p>
@@ -195,8 +195,9 @@
         </div>
     </div>
 
-    <!-- Подключаем библиотеку для работы с Excel -->
+    <!-- Подключаем библиотеки для работы с Excel/CSV -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" integrity="sha512-i3QZC8pQ3aG0l9i6Wl4C2r3nX0zQmA2hB0qzqj3V4nF4SgH8i2p3d3bH4w2n0X2lq9H3uEo0pC7bQZB3Q0M9Rw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="src/import-data.js"></script>
 </body>
 </html>
