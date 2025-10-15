@@ -1345,45 +1345,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const mapContainer = document.querySelector('.map-container');
     if (!mapContainer) return;
     
-    // Добавляем или обновляем содержимое карты
-    if (!mapContainer.innerHTML.trim()) {
-      mapContainer.innerHTML = `
-        <div class="map-image">
-          <img src="https://via.placeholder.com/800x400/1a1a1a/62a744?text=Карта+аварийности+Москвы" 
-               alt="Карта аварийности" class="dtp-map">
-          <div class="map-overlay">
-            <div class="map-stats">
-              <div class="stat-item">
-                <span class="stat-label">Всего ДТП</span>
-                <span class="stat-value">310</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-label">Высокий риск</span>
-                <span class="stat-value red">42</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-label">Средний риск</span>
-                <span class="stat-value yellow">128</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="map-legend">
-          <div class="legend-item">
-            <span class="legend-marker red"></span>
-            <span>Высокий риск</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-marker yellow"></span>
-            <span>Средний риск</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-marker" style="background: #62a744"></span>
-            <span>Низкий риск</span>
-          </div>
-        </div>
-      `;
-    }
+    // Всегда встраиваем внешний ресурс через iframe + fallback
+    // Хак: прячем верхнюю панель/авторизацию, обрезая верхнюю часть iframe (без вмешательства в чужой сайт)
+    // Просто сдвигаем содержимое iframe вверх и увеличиваем его высоту внутри обрезающего контейнера
+    const cropTopPx = 56; // высота верхней полосы у источника
+    mapContainer.innerHTML = `
+      <div class="embed-map" style="position:relative; width:100%; aspect-ratio: 16/9; min-height:360px; background:#0f0f10; border:1px solid rgba(255,255,255,.08); border-radius:12px; overflow:hidden;">
+        <iframe 
+          src="https://cogisdemo.dataeast.com/portal/samples/dtp" 
+          title="Карта аварийности"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          style="position:absolute; left:0; right:0; width:100%; height:calc(100% + ${cropTopPx}px); top:-${cropTopPx}px; border:0; background:#0f0f10;"
+        ></iframe>
+      </div>
+      <div class="map-coords" style="display:flex; gap:16px; align-items:center; margin-top:10px; font-weight:700;">
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; margin-top:12px;">
+      </div>
+    `;
   }
 
 
