@@ -1947,7 +1947,7 @@ async function refreshTransportData() {
     return;
   }
   
-  container.innerHTML = '<div class="loading-spinner">Загрузка маршрутов...</div>';
+  container.innerHTML = '<div class="loading-spinner"><span>Загрузка маршрутов...</span></div>';
   
   try {
     const response = await fetch('/api/transport?limit=10');

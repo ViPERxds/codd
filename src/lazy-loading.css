@@ -204,15 +204,24 @@
 .stagger-6 { transition-delay: 0.6s; }
 
 /* Loading Spinner */
+/* Исправление: текст внутри не вращается. Крутим только псевдоэлемент. */
 .loading-spinner {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px auto;
+}
+
+.loading-spinner::before {
+    content: "";
     width: 40px;
     height: 40px;
     border: 4px solid #f3f3f3;
     border-top: 4px solid #62a744;
     border-radius: 50%;
     animation: spin 1s linear infinite;
-    margin: 20px auto;
+    display: inline-block;
 }
 
 @keyframes spin {
