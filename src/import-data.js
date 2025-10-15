@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
   const upload = document.getElementById('fileUpload');
   const input = document.getElementById('fileInput');
+  const csvInput = document.getElementById('csvInput');
+  const chooseExcelBtn = document.getElementById('chooseExcelBtn');
+  const chooseCsvBtn = document.getElementById('chooseCsvBtn');
   const fileInfo = document.getElementById('fileInfo');
   const fileName = document.getElementById('fileName');
   const fileSize = document.getElementById('fileSize');
@@ -27,6 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   upload.addEventListener('click', () => input.click());
+  if (chooseExcelBtn) chooseExcelBtn.addEventListener('click', () => input.click());
+  if (chooseCsvBtn) chooseCsvBtn.addEventListener('click', () => csvInput.click());
   upload.addEventListener('dragover', (e) => { e.preventDefault(); upload.classList.add('dragover'); });
   upload.addEventListener('dragleave', () => upload.classList.remove('dragover'));
   upload.addEventListener('drop', (e) => {
@@ -38,6 +43,11 @@ document.addEventListener('DOMContentLoaded', () => {
   input.addEventListener('change', (e) => {
     if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]);
   });
+  if (csvInput) {
+    csvInput.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]);
+    });
+  }
 
   function handleFile(file) {
     showFileInfo(file);

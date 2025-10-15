@@ -154,6 +154,12 @@
                         <h3>Перетащите файл сюда или нажмите для выбора</h3>
                         <p>Поддерживаются форматы: .csv, .xlsx, .xls</p>
                         <input type="file" id="fileInput" class="file-input" accept=".csv,.xlsx,.xls">
+                        <!-- Отдельная кнопка и input для CSV -->
+                        <div style="margin-top:14px; display:flex; gap:10px; justify-content:center;">
+                            <button type="button" class="btn btn-primary" id="chooseExcelBtn">Выбрать Excel</button>
+                            <button type="button" class="btn btn-secondary" id="chooseCsvBtn">Выбрать CSV</button>
+                        </div>
+                        <input type="file" id="csvInput" class="file-input" accept=".csv">
                     </div>
                     <div id="fileInfo" style="display: none;">
                         <p><strong>Файл:</strong> <span id="fileName"></span></p>

@@ -351,10 +351,20 @@ router.get('/statistics/overview', async (req, res) => {
 // Импорт CSV/Excel (универсальный JSON массив rows)
 router.post('/import-csv', async (req, res) => {
   try {
-    const rows = Array.isArray(req.body.rows) ? req.body.rows : [];
-    return res.json({ imported: rows.length });
+    console.log('[import-csv] headers:', req.headers['content-type']);
+    let body = req.body;
+    if (typeof body === 'string') {
+      try { body = JSON.parse(body); } catch (e) { console.warn('[import-csv] body is string and not JSON'); body = {}; }
+    }
+    console.log('[import-csv] body keys:', Object.keys(body || {}));
+    const rowsRaw = body && body.rows !== undefined ? body.rows : [];
+    const rows = Array.isArray(rowsRaw) ? rowsRaw : [];
+    console.log(`[import-csv] received rows: ${rows.length}`);
+    // TODO: тут можно добавить сохранение в БД
+    return res.status(200).json({ imported: rows.length });
   } catch (e) {
-    return res.status(500).json({ error: 'Import failed', details: e.message });
+    console.error('[import-csv] error:', e);
+    return res.status(500).json({ error: 'Import failed', details: e?.message || String(e) });
   }
 });
 

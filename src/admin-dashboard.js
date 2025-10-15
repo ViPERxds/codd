@@ -2549,10 +2549,22 @@ class AdminDashboard {
         const startImportBtn = document.getElementById('startImport');
 
         if (!fileUpload || !fileInput || !startImportBtn) return;
+        // Кнопки выбора Excel/CSV, если присутствуют в админке
+        const csvInput = document.getElementById('csvInput');
+        const chooseExcelBtn = document.getElementById('chooseExcelBtn');
+        const chooseCsvBtn = document.getElementById('chooseCsvBtn');
 
         // Click to select file
-        fileUpload.addEventListener('click', () => {
+        fileUpload.addEventListener('click', () => { fileInput.click(); });
+        if (chooseExcelBtn) chooseExcelBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             fileInput.click();
+        });
+        if (chooseCsvBtn) chooseCsvBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (csvInput) csvInput.click();
         });
 
         // Drag and drop
@@ -2580,6 +2592,11 @@ class AdminDashboard {
                 this.handleFile(e.target.files[0]);
             }
         });
+        if (csvInput) {
+            csvInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) this.handleFile(e.target.files[0]);
+            });
+        }
 
         // Start import
         startImportBtn.addEventListener('click', () => {
@@ -2588,8 +2605,16 @@ class AdminDashboard {
     }
 
     handleFile(file) {
-        if (!file.name.match(/\.(xlsx|xls)$/)) {
-            this.showError('Пожалуйста, выберите файл Excel (.xlsx или .xls)');
+        // Показать блок настройки импорта и очистить лог
+        const mappingSection = document.getElementById('mappingSection');
+        const sheetMapping = document.getElementById('sheetMapping');
+        const importLog = document.getElementById('importLog');
+        if (mappingSection) mappingSection.style.display = 'block';
+        if (sheetMapping) sheetMapping.innerHTML = '';
+        if (importLog) importLog.innerHTML = '';
+
+        if (!file.name.match(/\.(xlsx|xls|csv)$/i)) {
+            this.showError('Пожалуйста, выберите файл данных (.csv, .xlsx или .xls)');
             return;
         }
 
@@ -2598,7 +2623,14 @@ class AdminDashboard {
         document.getElementById('fileSize').textContent = this.formatFileSize(file.size);
         document.getElementById('fileInfo').style.display = 'block';
 
-        // Show processing message
+        // CSV обрабатываем отдельным путем
+        if (/\.csv$/i.test(file.name)) {
+            this.showMappingLog('Начинаем обработку CSV файла...');
+            this.handleCSV(file);
+            return;
+        }
+
+        // Show processing message для Excel
         this.showMappingLog('Начинаем обработку Excel файла...');
 
         // Read file
@@ -2619,6 +2651,93 @@ class AdminDashboard {
             }
         };
         reader.readAsArrayBuffer(file);
+    }
+
+    // Простая обработка CSV без внешних библиотек
+    handleCSV(file) {
+        const sheetMapping = document.getElementById('sheetMapping');
+        sheetMapping.innerHTML = '';
+        const item = document.createElement('div');
+        item.className = 'sheet-item';
+        item.innerHTML = '<div class="sheet-name">CSV файл</div><span class="sheet-status status-mapped">готово</span>';
+        sheetMapping.appendChild(item);
+
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            try {
+                const t0 = Date.now();
+                this.showMappingLog(`[${new Date().toLocaleTimeString()}] Чтение файла…`);
+                const text = e.target.result;
+                const rows = this.parseCSVText(text);
+                this.showMappingLog(`[${new Date().toLocaleTimeString()}] Строк прочитано: ${rows.length}`);
+
+                // Отправляем на backend общий JSON
+                this.showMappingLog(`[${new Date().toLocaleTimeString()}] Отправка на сервер…`);
+                await fetch('/api/documents/import-csv', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ rows })
+                }).then(async (r) => {
+                    const elapsed = ((Date.now() - t0) / 1000).toFixed(2);
+                    if (!r.ok) {
+                        this.showMappingLog(`[${new Date().toLocaleTimeString()}] Ошибка HTTP ${r.status}`);
+                        throw new Error(`HTTP ${r.status}`);
+                    }
+                    const data = await r.json();
+                    const imported = data && (data.imported ?? rows.length);
+                    this.showMappingLog(`[${new Date().toLocaleTimeString()}] Сервер принял записей: ${imported}`);
+                    this.showMappingLog(`[${new Date().toLocaleTimeString()}] Импорт завершён за ${elapsed}с`);
+                });
+            } catch (err) {
+                console.error(err);
+                this.showError('Ошибка обработки CSV');
+                this.showMappingLog(`[${new Date().toLocaleTimeString()}] Ошибка: ${err.message}`);
+            }
+        };
+        reader.readAsText(file, 'utf-8');
+    }
+
+    // Парсер CSV c поддержкой кавычек
+    parseCSVText(text) {
+        const lines = text.split(/\r?\n/).filter(l => l.trim().length);
+        if (lines.length === 0) return [];
+        const headers = this.parseCSVRow(lines[0]);
+        const rows = [];
+        for (let i = 1; i < lines.length; i++) {
+            const cols = this.parseCSVRow(lines[i]);
+            const obj = {};
+            headers.forEach((h, idx) => {
+                const key = (h || '').replace(/^"|"$/g, '').trim();
+                const val = (cols[idx] || '').replace(/^"|"$/g, '').trim();
+                obj[key] = val;
+            });
+            rows.push(obj);
+        }
+        return rows;
+    }
+
+    parseCSVRow(line) {
+        const result = [];
+        let cur = '';
+        let inQuotes = false;
+        for (let i = 0; i < line.length; i++) {
+            const ch = line[i];
+            if (ch === '"') {
+                if (inQuotes && line[i + 1] === '"') { // escaped quote
+                    cur += '"';
+                    i++;
+                } else {
+                    inQuotes = !inQuotes;
+                }
+            } else if (ch === ',' && !inQuotes) {
+                result.push(cur);
+                cur = '';
+            } else {
+                cur += ch;
+            }
+        }
+        result.push(cur);
+        return result;
     }
 
     convertAndProcessWorkbook(workbook) {

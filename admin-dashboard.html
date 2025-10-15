@@ -509,18 +509,23 @@
             <section id="import" class="content-section">
                 <div class="section-header">
                     <h2>Импорт данных</h2>
-                    <p>Загрузка данных из Excel файла</p>
+                    <p style="margin:0">Загрузка данных из Excel/CSV</p>
                 </div>
                 
                 <div class="import-container">
                     <!-- Загрузка файла -->
                     <div class="import-section">
-                        <h3>1. Загрузка Excel файла</h3>
+                        <h3>1. Загрузка файла данных</h3>
                         <div class="file-upload" id="fileUpload">
                             <div class="upload-icon">📁</div>
-                            <h4>Перетащите Excel файл сюда или нажмите для выбора</h4>
+                            <h4>Перетащите файл сюда или нажмите для выбора</h4>
                             <p>Поддерживаются форматы: .csv, .xlsx, .xls</p>
-                            <input type="file" id="fileInput" class="file-input" accept=".xlsx,.xls">
+                            <input type="file" id="fileInput" class="file-input" accept=".csv,.xlsx,.xls">
+                            <div style="margin-top:14px; display:flex; gap:10px; justify-content:center;">
+                                <button type="button" class="btn btn-primary" id="chooseExcelBtn">Выбрать Excel</button>
+                                <button type="button" class="btn btn-secondary" id="chooseCsvBtn">Выбрать CSV</button>
+                            </div>
+                            <input type="file" id="csvInput" class="file-input" accept=".csv">
                         </div>
                         <div id="fileInfo" style="display: none;">
                             <p><strong>Файл:</strong> <span id="fileName"></span></p>
