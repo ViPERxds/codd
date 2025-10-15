@@ -158,3 +158,69 @@
   .slider-slide p{font-size:48px}
   .slider-btn{width:90px;height:90px;font-size:44px}
 }
+
+/* ====== ЧИСТАЯ ВЕРСИЯ КАРТОЧЕК О «МИССИИ / ЦЕННОСТЯХ / ВИДЕНИИ» ======
+   Цель: ровный, читабельный шрифт без теней и эффектов. Статичная верстка. */
+.about-dark{ -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+
+.about-dark .hover-cards{gap:24px}
+
+.about-dark .hover-card{
+  background:#121414;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:20px;
+  min-height:auto;
+  padding:28px;
+  box-shadow:0 8px 20px rgba(0,0,0,.25);
+  transform:none;
+  animation:none;
+}
+
+.about-dark .hover-card:hover{transform:none;box-shadow:0 10px 24px rgba(0,0,0,.28)}
+
+/* Делаем карточки статичными: фронт и бэк видны как обычный поток */
+.about-dark .hover-card .front{position:static;inset:auto;display:flex;align-items:flex-start;gap:12px;color:#fff}
+.about-dark .hover-card .back{position:static;inset:auto;background:transparent;color:#e7f3ea;padding:0;border-radius:0;opacity:1;transform:none;box-shadow:none;animation:none;font-size:18px;line-height:1.6}
+
+/* Типографика: без теней, корректные веса */
+.about-dark .hover-card .front .icon{font-size:56px;filter:none;opacity:1;animation:none;transition:none}
+.about-dark .hover-card .front h3{margin:4px 0 0;font-size:24px;font-weight:800;letter-spacing:-0.01em;text-shadow:none}
+.about-dark .hover-card p,
+.about-dark .hover-card li{font-size:16px;line-height:1.6;text-shadow:none}
+
+.about-dark .hover-card .back ul{margin:12px 0 0 0;padding:0 0 0 18px;list-style:disc;text-shadow:none}
+.about-dark .hover-card .back li{margin:6px 0;padding-left:0;font-weight:600}
+.about-dark .hover-card .back li::before{content:none}
+
+/* Адаптивность */
+@media (min-width: 768px){
+  .about-dark .hover-card{padding:32px}
+  .about-dark .hover-card .front .icon{font-size:64px}
+  .about-dark .hover-card .front h3{font-size:28px}
+  .about-dark .hover-card p,
+  .about-dark .hover-card li{font-size:17px}
+}
+
+@media (min-width: 1200px){
+  .about-dark .hover-card .front h3{font-size:30px}
+  .about-dark .hover-card p,
+  .about-dark .hover-card li{font-size:18px}
+}
+
+/* ====== ЧИСТЫЕ ШРИФТЫ ДЛЯ HERO / RIBBON / SLIDER НА about ====== */
+/* Hero */
+.hero-title{ text-shadow:none; animation:none; }
+.hero::before,.hero::after{ animation:none }
+.hero-overlay{ background:linear-gradient(135deg,rgba(0,0,0,.45),rgba(0,0,0,.45)) }
+
+/* Ribbon */
+.ribbon--flat span{ text-shadow:none; animation:none }
+.ribbon::before{ animation:none }
+
+/* Slider */
+.slider{ animation:none }
+.slider::before,.slider::after{ animation:none }
+.slider-btn{ animation:none }
+.slider-slide h3{ text-shadow:none }
+.slider-slide p{ text-shadow:none }
+.slide-icon{ filter:none }
