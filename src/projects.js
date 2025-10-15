@@ -20,16 +20,24 @@ class HomeProjectsLoader {
             if (!response.ok) throw new Error('Ошибка загрузки проектов');
             
             const data = await response.json();
-            const projects = Array.isArray(data.data) ? data.data : 
+            let projects = Array.isArray(data.data) ? data.data : 
                            Array.isArray(data.projects) ? data.projects : 
                            Array.isArray(data) ? data : [];
+            // Фильтр: скрываем демо-проекты (хардкод)
+            const blacklistProjectTitles = new Set([
+                'Модернизация светофорной сети'
+            ]);
+            projects = projects.filter(p => !blacklistProjectTitles.has(String(p.title || p.name || '').trim()));
             
-            // Показываем только первые 4 проекта
             const limitedProjects = projects.slice(0, 4);
             this.renderProjects(limitedProjects);
         } catch (error) {
-            console.error('Ошибка загрузки проектов:', error);
-            this.showFallbackProjects();
+            console.error('Ошибка загрузки проектов из API:', error);
+            // Без хардкода: просто показываем сообщение об ошибке
+            const container = document.querySelector('.projects-grid');
+            if (container) {
+                container.innerHTML = '<p class="text-center muted">Не удалось загрузить проекты</p>';
+            }
         }
     }
 
@@ -89,66 +97,7 @@ class HomeProjectsLoader {
         });
     }
 
-    showFallbackProjects() {
-        const container = document.querySelector('.projects-grid');
-        if (!container) return;
-
-        // Показываем заглушку если API недоступен
-        container.innerHTML = `
-            <article class="project-card">
-                <div class="project-image">
-                    <img src="assets/images/project-default.jpg" alt="Схема движения грузовиков" loading="lazy">
-                </div>
-                <div class="project-content">
-                    <h3 class="project-title">Схема движения грузовиков</h3>
-                    <p class="project-description">Грузовой каркас</p>
-                    <div class="project-meta">
-                        <span class="project-status in-progress">В разработке</span>
-                        <span class="project-date">2024</span>
-                    </div>
-                </div>
-            </article>
-            <article class="project-card">
-                <div class="project-image">
-                    <img src="assets/images/project-default.jpg" alt="Портал о велокультуре" loading="lazy">
-                </div>
-                <div class="project-content">
-                    <h3 class="project-title">Портал о велокультуре</h3>
-                    <p class="project-description">Просветительский проект</p>
-                    <div class="project-meta">
-                        <span class="project-status completed">Завершен</span>
-                        <span class="project-date">2024</span>
-                    </div>
-                </div>
-            </article>
-            <article class="project-card">
-                <div class="project-image">
-                    <img src="assets/images/project-default.jpg" alt="Зеленое кольцо" loading="lazy">
-                </div>
-                <div class="project-content">
-                    <h3 class="project-title">Зеленое кольцо</h3>
-                    <p class="project-description">Кольцевой веломаршрут</p>
-                    <div class="project-meta">
-                        <span class="project-status planning">Планируется</span>
-                        <span class="project-date">2025</span>
-                    </div>
-                </div>
-            </article>
-            <article class="project-card">
-                <div class="project-image">
-                    <img src="assets/images/project-default.jpg" alt="Инновационный центр" loading="lazy">
-                </div>
-                <div class="project-content">
-                    <h3 class="project-title">Инновационный центр «Безопасный транспорт»</h3>
-                    <p class="project-description">Исследования и разработки</p>
-                    <div class="project-meta">
-                        <span class="project-status in-progress">В разработке</span>
-                        <span class="project-date">2024</span>
-                    </div>
-                </div>
-            </article>
-        `;
-    }
+    showFallbackProjects() {}
 
     getStatusText(status) {
         const statusMap = {

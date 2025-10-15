@@ -33,49 +33,21 @@ class NewsSystem {
         try {
             const apiBase = window.apiUtils?.getApiBase() || '';
             const apiData = await window.apiUtils.fetchNoCacheJSON(`${apiBase}/api/news`);
-            this.newsData = { news: apiData.data || apiData };
+            let items = apiData.data || apiData || [];
+            // Фильтр: скрываем демо-новости (хардкод)
+            const blacklistTitles = new Set([
+                'Новые проекты развития дорожной инфраструктуры',
+                'Внедрение умных светофоров',
+                'Строительство новых парковок',
+                '3213'
+            ]);
+            items = (Array.isArray(items) ? items : []).filter(n => !blacklistTitles.has(String(n.title || '').trim()));
+            this.newsData = { news: items };
             console.log('[News] API loaded:', this.newsData);
             return;
         } catch (error) {
-            console.warn('API недоступен, пробуем JSON файл:', error);
-        }
-
-        try {
-            // Fallback - JSON файл
-            const response = await fetch('src/news-data.json');
-            if (!response.ok) {
-                throw new Error('Не удалось загрузить данные новостей');
-            }
-            this.newsData = await response.json();
-        } catch (error) {
-            console.warn('Не удалось загрузить JSON файл, используем встроенные данные:', error);
-            // Fallback - встроенные данные
-            this.newsData = {
-                "news": [
-                    {
-                        "id": 1,
-                        "title": "В Смоленске запущена система умных светофоров",
-                        "excerpt": "На 10 перекрёстках города установлены адаптивные светофоры, которые автоматически регулируют время сигналов в зависимости от интенсивности движения. Это позволит сократить время ожидания на 30%.",
-                        "content": "Сегодня в Смоленске состоялся запуск инновационной системы адаптивных светофоров. Проект реализован Центром организации дорожного движения Смоленской области в рамках программы \"Умный город\".",
-                        "date": "2025-01-15",
-                        "category": "Технологии",
-                        "tags": ["Умные светофоры", "Технологии", "Смоленск", "Транспорт"],
-                        "featured": true,
-                        "image": "🚦"
-                    },
-                    {
-                        "id": 2,
-                        "title": "Установлены новые камеры на опасных участках",
-                        "excerpt": "В рамках программы повышения безопасности дорожного движения установлено 15 новых камер видеонаблюдения на аварийно-опасных участках дорог.",
-                        "content": "ЦОДД Смоленской области продолжает работу по повышению безопасности дорожного движения. На этой неделе завершена установка 15 новых камер видеонаблюдения на наиболее аварийно-опасных участках дорог региона.",
-                        "date": "2025-01-12",
-                        "category": "Безопасность",
-                        "tags": ["Камеры", "Безопасность", "Видеонаблюдение"],
-                        "featured": false,
-                        "image": "📹"
-                    }
-                ]
-            };
+            console.error('Ошибка загрузки данных новостей из API:', error);
+            this.newsData = { news: [] };
         }
     }
 
@@ -290,28 +262,19 @@ async function loadNewsDetail() {
     }
 
     try {
-        // сначала из API
         const apiBase = window.apiUtils?.getApiBase() || '';
-        let news = null;
-        try {
-            const item = await window.apiUtils.fetchNoCacheJSON(`${apiBase}/api/news/${newsId}`);
-            news = item?.data || item;
-        } catch (_) {}
-        if (!news) {
-            // fallback JSON
-            const response = await fetch('src/news-data.json');
-            const data = await response.json();
-            news = data.news.find(item => item.id === parseInt(newsId));
-        }
+        const item = await window.apiUtils.fetchNoCacheJSON(`${apiBase}/api/news/${newsId}`);
+        const news = item?.data || item;
         if (!news) {
             console.error('Новость не найдена');
             return;
         }
-        
         console.log('Loaded news data:', news);
         renderNewsDetail(news);
+        // Подгрузим похожие новости
+        loadRelatedNews(newsId, news.category);
     } catch (error) {
-        console.error('Ошибка загрузки новости:', error);
+        console.error('Ошибка загрузки новости из API:', error);
     }
 }
 
@@ -388,6 +351,45 @@ function renderNewsDetail(news) {
         newsTags.innerHTML = news.tags.map(tag => 
             `<span class="tag">${tag}</span>`
         ).join('');
+    }
+}
+
+// Рендер похожих новостей на детальной странице
+async function loadRelatedNews(currentId, category) {
+    const container = document.querySelector('.related-grid');
+    if (!container) return;
+    try {
+        const apiBase = window.apiUtils?.getApiBase() || '';
+        const qs = new URLSearchParams({ limit: '6', sort: '-publishedAt' });
+        const res = await window.apiUtils.fetchNoCacheJSON(`${apiBase}/api/news?${qs.toString()}`);
+        const list = Array.isArray(res?.data) ? res.data : (Array.isArray(res) ? res : []);
+        const filtered = list.filter(n => String(n.id) !== String(currentId) && (!category || n.category === category)).slice(0, 3);
+        if (filtered.length === 0) {
+            container.innerHTML = '<p class="muted">Похожие новости не найдены</p>';
+            return;
+        }
+        const html = filtered.map(n => {
+            const dateStr = n.publishedAt || n.createdAt || n.date;
+            const date = dateStr ? new Date(dateStr) : null;
+            const fmt = date ? date.toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
+            const cat = n.category || '';
+            const title = n.title || 'Новость';
+            const excerpt = n.excerpt || '';
+            return `
+                <article class="related-card">
+                    <div class="related-meta">
+                        <time datetime="${dateStr || ''}">${fmt}</time>
+                        ${cat ? `<span class="related-category">${cat}</span>` : ''}
+                    </div>
+                    <h3><a href="news-detail.html?id=${n.id}">${title}</a></h3>
+                    ${excerpt ? `<p>${excerpt}</p>` : ''}
+                </article>
+            `;
+        }).join('');
+        container.innerHTML = html;
+    } catch (e) {
+        console.warn('Не удалось загрузить похожие новости:', e);
+        container.innerHTML = '<p class="muted">Не удалось загрузить похожие новости</p>';
     }
 }
 
