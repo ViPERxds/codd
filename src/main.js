@@ -1540,14 +1540,17 @@ initModals();
         const fmt = date ? date.toLocaleDateString('ru-RU') : '';
         const rawCover = n.image || n.cover || n.coverUrl || n.images || '';
         const cover = (window.apiUtils && window.apiUtils.resolveMediaUrl) ? window.apiUtils.resolveMediaUrl(rawCover) : ((Array.isArray(n.images) && n.images[0]) || n.image || n.cover || 'assets/images/news-1.jpg');
+        const id = n.id ?? n._id ?? '';
         return `
+          <a class="news-link-card" href="news-detail.html?id=${encodeURIComponent(id)}" aria-label="Открыть новость: ${title}">
           <article class="news-item">
             <div>
               <div class="news-meta">${fmt} ${category ? `<span class=\"chip\">${category}</span>` : ''}</div>
               <div class="news-title">${title}</div>
             </div>
             <img src="${cover}" alt="${title}" loading="lazy">
-          </article>`;
+            </article>
+          </a>`;
       }).join('');
       container.innerHTML = html;
       const moreBtn = document.querySelector('.news-all');
@@ -1580,14 +1583,17 @@ initModals();
         const category = p.category || p.status || '';
         const rawCover = p.image || p.projectCover || p.gallery || p.projectImages || '';
         const cover = (window.apiUtils && window.apiUtils.resolveMediaUrl) ? window.apiUtils.resolveMediaUrl(rawCover) : ((Array.isArray(p.gallery) && p.gallery[0]) || (Array.isArray(p.projectImages) && p.projectImages[0]) || p.image || p.projectCover || 'assets/images/news-1.jpg');
+        const id = p.id ?? p._id ?? '';
         return `
+          <a class="news-link-card" href="project-detail.html?id=${encodeURIComponent(id)}" aria-label="Открыть проект: ${title}">
           <article class="news-item">
             <div>
               <div class="news-meta">${category ? `<span class=\"chip\">${category}</span>` : ''}</div>
               <div class="news-title">${title}</div>
             </div>
             <img src="${cover}" alt="${title}" loading="lazy">
-          </article>`;
+          </article>
+          </a>`;
       }).join('');
       container.innerHTML = html;
       // кнопка уже в projects-header

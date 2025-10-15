@@ -1503,6 +1503,23 @@ class AdminDashboard {
         
         console.log('About to call showModal with:', title, content);
         this.showModal(title, content);
+
+        // Маска ₽ для бюджета проекта
+        if (type === 'project') {
+            const budgetInput = document.getElementById('budget');
+            if (budgetInput) {
+                budgetInput.addEventListener('input', () => {
+                    const raw = budgetInput.value.replace(/[^0-9]/g, '');
+                    if (!raw) { budgetInput.value = ''; return; }
+                    const num = Number(raw);
+                    budgetInput.value = new Intl.NumberFormat('ru-RU').format(num) + ' ₽';
+                });
+                budgetInput.addEventListener('blur', () => {
+                    const raw = budgetInput.value.replace(/[^0-9]/g, '');
+                    budgetInput.value = raw ? (new Intl.NumberFormat('ru-RU').format(Number(raw)) + ' ₽') : '';
+                });
+            }
+        }
     }
 
     editItem(type, id) {
@@ -1945,8 +1962,12 @@ class AdminDashboard {
                     <input type="text" id="title" required placeholder="Введите название проекта">
                 </div>
                 <div class="form-group">
-                    <label for="description">Описание *</label>
-                    <textarea id="description" required rows="4" placeholder="Описание проекта"></textarea>
+                    <label for="shortDescription">Краткое описание *</label>
+                    <textarea id="shortDescription" required rows="3" placeholder="Короткий текст для карточки проекта"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="detailedDescription">Подробное описание *</label>
+                    <textarea id="detailedDescription" required rows="8" placeholder="Полное описание проекта для детальной страницы"></textarea>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
@@ -1979,8 +2000,8 @@ class AdminDashboard {
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="budget">Бюджет</label>
-                    <input type="number" id="budget" min="0" step="0.01" placeholder="0.00">
+                    <label for="budget">Бюджет (₽)</label>
+                    <input type="text" id="budget" inputmode="decimal" placeholder="0 ₽">
                 </div>
                 <div class="form-group">
                     <label for="projectCover">Обложка</label>
@@ -2382,6 +2403,23 @@ class AdminDashboard {
             data.authorId = 1; // ID текущего пользователя
             data.viewsCount = 0;
         } else if (type === 'project') {
+            // Валидация обязательных полей
+            if (!data.title || !data.title.trim()) {
+                this.showError('Название обязательно');
+                return;
+            }
+            // Приводим к ожидаемым полям бэкенда
+            // Краткое описание идёт как description для карточки
+            if (data.shortDescription && !data.description) {
+                data.description = data.shortDescription;
+            }
+            // Нормализуем бюджет из маски с ₽
+            if (typeof data.budget === 'string') {
+                const raw = data.budget.replace(/[^0-9]/g, '');
+                data.budget = raw ? Number(raw) : 0;
+            } else {
+                data.budget = Number(data.budget || 0);
+            }
             data.managerId = 1; // ID текущего пользователя
             data.isPublic = true;
         } else if (type === 'service') {

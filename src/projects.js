@@ -55,21 +55,30 @@ class HomeProjectsLoader {
 
         // Имитируем задержку загрузки для демонстрации
         setTimeout(() => {
-            container.innerHTML = projects.map((project, index) => `
-                <article class="project-card card-loading stagger-${(index % 6) + 1}">
+            container.innerHTML = projects.map((project, index) => {
+                const id = project.id ?? project._id ?? '';
+                const title = project.title || 'Проект';
+                const cover = project.image || project.cover || 'assets/images/project-default.jpg';
+                const shortDesc = project.shortDescription || project.description || 'Описание проекта';
+                const budget = this.formatCurrency(project.budget || project.cost || project.price);
+                return `
+                <a class="news-link-card" href="project-detail.html?id=${encodeURIComponent(id)}" aria-label="Открыть проект: ${title}">
+                  <article class="project-card card-loading stagger-${(index % 6) + 1}">
                     <div class="project-image">
-                        <img src="${project.image || project.cover || 'assets/images/project-default.jpg'}" alt="${project.title || 'Проект'}" loading="lazy">
+                      <img src="${cover}" alt="${title}" loading="lazy">
                     </div>
                     <div class="project-content">
-                        <h3 class="project-title">${project.title || 'Проект'}</h3>
-                        <p class="project-description">${project.description || 'Описание проекта'}</p>
-                        <div class="project-meta">
-                            <span class="project-status ${project.status || 'in-progress'}">${this.getStatusText(project.status)}</span>
-                            <span class="project-date">${this.formatDate(project.createdAt || project.updatedAt)}</span>
-                        </div>
+                      <h3 class="project-title">${title}</h3>
+                      <p class="project-description">${shortDesc}</p>
+                      <div class="project-meta">
+                        <span class="project-status ${project.status || 'in-progress'}">${this.getStatusText(project.status)}</span>
+                        <span class="project-date">${this.formatDate(project.createdAt || project.updatedAt)}</span>
+                        ${budget ? `<span class=\"project-budget-badge\">${budget}</span>` : ''}
+                      </div>
                     </div>
-                </article>
-            `).join('');
+                  </article>
+                </a>`;
+            }).join('');
 
             // Анимируем появление карточек
             this.animateProjectCards();
@@ -114,6 +123,12 @@ class HomeProjectsLoader {
         const date = new Date(dateString);
         return date.getFullYear().toString();
     }
+
+    formatCurrency(value) {
+        const num = Number(String(value).toString().replace(/[^0-9.,]/g, '').replace(',', '.'));
+        if (!isFinite(num) || num <= 0) return '';
+        return num.toLocaleString('ru-RU') + ' ₽';
+    }
 }
 
 // Инициализация при загрузке страницы
@@ -122,4 +137,63 @@ document.addEventListener('DOMContentLoaded', function() {
     if (projectsContainer) {
         new HomeProjectsLoader();
     }
+
+    if (window.location.pathname.includes('project-detail.html')) {
+        loadProjectDetail();
+    }
 });
+
+// ===== Детальная страница проекта =====
+async function loadProjectDetail() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    if (!id) return;
+    try {
+        const res = await fetch(`/api/projects/${encodeURIComponent(id)}?ts=${Date.now()}`);
+        const data = await res.json();
+        const project = data?.data || data;
+        if (!project) return;
+        renderProjectDetail(project);
+    } catch (e) {
+        console.error('Ошибка загрузки проекта:', e);
+    }
+}
+
+function renderProjectDetail(project) {
+    document.title = `${project.title || 'Проект'} - ЦОДД Смоленской области`;
+    const titleEl = document.querySelector('.project-title');
+    if (titleEl) titleEl.textContent = project.title || 'Проект';
+
+    const metaEl = document.querySelector('.project-meta');
+    if (metaEl) {
+        const status = project.status || 'in-progress';
+        const budget = (new HomeProjectsLoader()).formatCurrency(project.budget || project.cost || project.price);
+        metaEl.innerHTML = `
+          <span class="project-status ${status}">${(new HomeProjectsLoader()).getStatusText(status)}</span>
+          ${budget ? `<span class=\"project-budget-badge\">${budget}</span>` : ''}
+        `;
+    }
+
+    const imageWrap = document.querySelector('.project-image');
+    if (imageWrap) {
+        const raw = project.image || project.cover || project.projectCover || project.imageUrl || project.coverUrl;
+        const cover = (window.apiUtils && window.apiUtils.resolveMediaUrl) ? window.apiUtils.resolveMediaUrl(raw) : raw;
+        if (cover) {
+            imageWrap.innerHTML = `<img src="${cover}" alt="${project.title || 'Проект'}" loading="lazy">`;
+            imageWrap.style.display = '';
+        } else {
+            imageWrap.style.display = 'none';
+        }
+    }
+
+    // Краткое описание на детальной странице не показываем
+    const shortEl = document.querySelector('.project-short');
+    if (shortEl) shortEl.remove();
+
+    const contentEl = document.querySelector('.project-content-body');
+    if (contentEl) {
+        const full = project.detailedDescription || project.details || project.content || project.body || project.longDescription || '';
+        const html = String(full || '').trim();
+        contentEl.innerHTML = html ? html.replace(/\n/g, '<br>') : (project.shortDescription || project.description || '');
+    }
+}

@@ -1062,6 +1062,23 @@ p, .p {
 
 }
 
+/* Бейдж бюджета для проектов */
+.project-budget-badge{
+  display:inline-block;
+  margin-left:12px;
+  padding:6px 10px;
+  border-radius:10px;
+  background:#e7f7e1;
+  color:#2b4d1f;
+  font-weight:800;
+  box-shadow:0 2px 8px rgba(98,167,68,.25);
+  font-size:14px;
+}
+
+/* Ссылка-обертка для карточки новости (убрать подчеркивание) */
+.news-link-card{display:block;text-decoration:none;color:inherit}
+.news-link-card:hover{text-decoration:none;color:inherit}
+
 .news-item img{width:100%;height:96px;object-fit:cover;border-radius:14px;box-shadow:0 6px 16px rgba(0,0,0,.12)}
 
 .news-meta{font-size:14px;color:#2b4d1f;margin-bottom:8px;font-weight:600}

@@ -3,37 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Детальная новость - ЦОДД Смоленской области</title>
+    <title>Проект - ЦОДД Смоленской области</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="src/styles.css">
     <link rel="stylesheet" href="src/smart-search.css">
-    <link rel="stylesheet" href="src/mobile.css">
     <link rel="stylesheet" href="src/news-detail.css">
+    <link rel="stylesheet" href="src/mobile.css">
 </head>
 <body>
     <a class="skip-link" href="#main">Перейти к содержимому</a>
-    
+
     <header class="site-header" data-header>
         <div class="container header-inner">
             <a href="index.html" class="logo" aria-label="ЦОДД Смоленской области">
                 <img src="assets/images/logo.webp" alt="ЦОДД Смоленской области" class="logo-img">
                 <span class="logo-text">ЦОДД Смоленской области</span>
             </a>
-
             <nav class="nav" aria-label="Основная навигация">
                 <ul class="nav-list" data-desktop-nav>
                     <li><a href="index.html#home">Главное</a></li>
-                    <li><a href="index.html#analytics">Мониторинг</a></li>
-                    <li><a href="index.html#analytics">Аналитика</a></li>
-                    <li><a href="index.html#projects">Проекты</a></li>
+                    <li><a href="index.html#monitoring">Мониторинг</a></li>
+                    <li><a href="index.html#analytics-section">Аналитика</a></li>
+                    <li><a href="projects.html">Проекты</a></li>
                     <li><a href="index.html#services">Услуги</a></li>
                 </ul>
-
-                <div class="search" role="search">
-                    <label class="sr-only" for="site-search">Поиск по сайту</label>
-                    <input id="site-search" class="search-input" type="search" placeholder="Поиск по сайту" autocomplete="off" data-search-input>
-                    <div class="search-suggestions" hidden data-suggestions></div>
-                </div>
 
                 <button class="burger" aria-expanded="false" aria-controls="mobile-menu" data-burger>
                     <span class="burger-line"></span>
@@ -66,52 +59,26 @@
     </header>
 
     <main id="main">
-        <section class="news-detail-section">
+        <section class="news-detail-section" style="margin-top: 12px;">
             <div class="container">
                 <nav class="breadcrumb">
                     <a href="index.html">Главная</a>
                     <span>→</span>
-                    <a href="news.html">Новости</a>
+                    <a href="projects.html">Проекты</a>
                     <span>→</span>
-                    <span>В Смоленске запущена система умных светофоров</span>
+                    <span class="project-title">Проект</span>
                 </nav>
 
                 <article class="news-detail">
                     <header class="news-header">
-                        <div class="news-meta">
-                            <time datetime=""></time>
-                            <span class="news-category"></span>
-                            <span class="news-tag" style="display:none;"></span>
-                        </div>
-                        <h1 class="news-title"></h1>
-                        <p class="news-excerpt"></p>
+                        <div class="news-meta project-meta"></div>
+                        <h1 class="news-title project-title">Проект</h1>
                     </header>
 
-                    <div class="news-image"></div>
+                    <div class="news-image project-image"></div>
 
-                    <div class="news-content">
-                        
-                    </div>
-
-                    <footer class="news-footer">
-                        <div class="news-tags">
-                            <span class="tag">Умные светофоры</span>
-                            <span class="tag">Технологии</span>
-                            <span class="tag">Смоленск</span>
-                            <span class="tag">Транспорт</span>
-                        </div>
-                        <div class="news-share">
-                            <span>Поделиться:</span>
-                            <a href="#" class="share-btn" aria-label="Поделиться в ВКонтакте">VK</a>
-                            <a href="#" class="share-btn" aria-label="Поделиться в Telegram">TG</a>
-                        </div>
-                    </footer>
+                    <div class="news-content project-content-body"></div>
                 </article>
-
-                <section class="related-news">
-                    <h2>Похожие новости</h2>
-                    <div class="related-grid"></div>
-                </section>
             </div>
         </section>
     </main>
@@ -139,8 +106,8 @@
                     <h4>Сервисы</h4>
                     <ul>
                         <li><a href="index.html#services">Услуги</a></li>
-                        <li><a href="index.html#docs">Документы</a></li>
-                        <li><a href="index.html#contacts">Контакты</a></li>
+                        <li><a href="documents.html">Документы</a></li>
+                        <li><a href="contacts.html">Контакты</a></li>
                     </ul>
                 </div>
             </nav>
@@ -153,6 +120,7 @@
 
     <script src="src/main.js" defer></script>
     <script src="src/smart-search.js" defer></script>
-    <script src="src/news.js" defer></script>
+    <script src="src/projects.js" defer></script>
 </body>
 </html>
+

@@ -312,27 +312,22 @@ function renderNewsDetail(news) {
         newsTitle.textContent = news.title;
     }
 
-    // Обновляем краткое описание
+    // Краткое описание на детальной странице не показываем
     const newsExcerpt = document.querySelector('.news-excerpt');
-    if (newsExcerpt) {
-        newsExcerpt.textContent = news.excerpt;
-    }
+    if (newsExcerpt) newsExcerpt.remove();
 
-    // Обновляем изображение
+    // Обновляем изображение: без плейсхолдеров/эмодзи
     const newsImageWrap = document.querySelector('.news-image');
     if (newsImageWrap) {
-        const cover = window.apiUtils?.resolveMediaUrl ? window.apiUtils.resolveMediaUrl(news.image || news.cover || news.imageUrl) : (news.image || news.cover || news.imageUrl || '');
-        if (cover && !cover.startsWith('🚦') && !cover.startsWith('📹')) {
-            // если есть реальное изображение, заменим placeholder
+        const raw = news.image || news.cover || news.imageUrl;
+        const cover = window.apiUtils?.resolveMediaUrl ? window.apiUtils.resolveMediaUrl(raw) : raw;
+        if (cover) {
             newsImageWrap.innerHTML = `<img src="${cover}" alt="${news.title}" loading="lazy">`;
-        } else if (news.image && news.image.startsWith('🚦')) {
-            // если это эмодзи, оставляем placeholder
-            newsImageWrap.innerHTML = `
-                <div class="news-image-placeholder">
-                    <span class="image-icon">${news.image}</span>
-                    <p>${news.title}</p>
-                </div>
-            `;
+            newsImageWrap.style.display = '';
+        } else {
+            // если изображения нет — скрываем блок полностью
+            newsImageWrap.innerHTML = '';
+            newsImageWrap.style.display = 'none';
         }
     }
 
